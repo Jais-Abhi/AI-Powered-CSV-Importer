@@ -1,5 +1,7 @@
 import { parseCSVFile } from '../Services/csv.service.js';
 import { createBatches } from '../utils/createBatches.js';
+import processBatches from "../Services/processBatches.service.js";
+
 
 const uploadCSV = async (req, res) => {
   console.log(req.file)
@@ -11,11 +13,11 @@ const uploadCSV = async (req, res) => {
     const records = await parseCSVFile(req.file.buffer);
     const batches = createBatches(records, 50); // Adjust batch size as needed
 
-    const result  = 
+    const result  = await processBatches(batches);
 
     return res.status(200).json({
       message: 'CSV parsed successfully',
-      data: batches,
+      data: result,
     });
   } catch (error) {
     console.error('CSV upload error:', error.message);
