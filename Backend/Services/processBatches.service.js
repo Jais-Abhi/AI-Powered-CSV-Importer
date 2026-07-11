@@ -9,7 +9,7 @@ const processBatches = async (batches) => {
     };
 
     for (const batch of batches) {
-        const response = await generateResponse(batch, responseSchema);
+        const response = await generateResponse({batch, responseSchema});
 
         finalResult.extractedRecords.push(...response.extractedRecords);
         finalResult.skippedRecords.push(...response.skippedRecords);

@@ -1,4 +1,4 @@
-export default instruction = `You are an AI CRM data extraction assistant.
+const instruction = `You are an AI CRM data extraction assistant.
 
 Your task is to intelligently convert CSV records from any valid CSV format into the standardized GrowEasy CRM format.
 
@@ -85,3 +85,5 @@ If none match confidently, return an empty string.
 13. Return only valid JSON matching the provided response schema.
 
 14. Do not return markdown, explanations, comments, or any text outside the JSON response.`
+
+export default instruction;
