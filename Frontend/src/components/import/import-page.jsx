@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   AlertCircle,
   ArrowUpFromLine,
-  CheckCircle2,
   DatabaseZap,
   FileSpreadsheet,
   Loader2,
@@ -14,11 +13,13 @@ import {
   UploadCloud,
   Workflow,
 } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Toaster } from '@/components/ui/sonner';
 import { parseCsvFile } from '@/lib/csv-parser';
 import { validateCsvFile } from '@/lib/csv-validation';
 import { cn } from '@/lib/utils';
@@ -54,7 +55,6 @@ export default function ImportPage() {
   const [isParsing, setIsParsing] = useState(false);
   const [isPreviewVisible, setIsPreviewVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
 
   const resetState = useCallback(() => {
     setFile(null);
@@ -63,7 +63,6 @@ export default function ImportPage() {
     setIsParsing(false);
     setIsPreviewVisible(false);
     setToastMessage('');
-    setShowToast(false);
   }, []);
 
   const handleFileSelection = useCallback(async (selectedFile) => {
@@ -120,22 +119,12 @@ export default function ImportPage() {
     onDrop: handleDrop,
   });
 
-  useEffect(() => {
-    if (!showToast) {
-      return undefined;
-    }
-
-    const timer = window.setTimeout(() => {
-      setShowToast(false);
-      setToastMessage('');
-    }, 2200);
-
-    return () => window.clearTimeout(timer);
-  }, [showToast]);
-
   const handleUploadClick = () => {
-    setToastMessage('Backend integration will be implemented in the next step.');
-    setShowToast(true);
+    const message = 'Backend integration will be implemented in the next step.';
+    setToastMessage(message);
+    toast.success('Upload queued', {
+      description: message,
+    });
   };
 
   if (!isPreviewVisible) {
@@ -158,7 +147,6 @@ export default function ImportPage() {
       previewData={previewData}
       onReselect={resetState}
       onUploadClick={handleUploadClick}
-      showToast={showToast}
       toastMessage={toastMessage}
     />
   );
@@ -178,10 +166,10 @@ function UploadView({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="w-full min-h-screen px-0 py-0"
+      className="w-full min-h-screen px-0 py-0 "
     >
-      <div className="flex flex-col gap-8 px-4 py-6 sm:px-6 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:px-8 lg:py-8">
-        <div className="order-2 flex flex-col gap-5 lg:order-1">
+      <div className="flex flex-col gap-8 px-4 py-6 sm:px-6 lg:grid lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 lg:px-8 lg:py-8 xl:px-10 xl:py-10">
+        <div className="order-2 flex flex-col justify-center gap-6 lg:order-1">
           <ProjectInfo />
         </div>
 
@@ -203,18 +191,18 @@ function UploadView({
 
 function ProjectInfo() {
   return (
-    <div className="flex flex-col gap-5">
-      <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border/70 bg-muted/50 px-3 py-1 text-sm text-muted-foreground">
+    <div className="flex flex-col gap-6">
+      <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border/80 bg-background/95 px-3 py-1 text-sm font-medium text-muted-foreground shadow-sm dark:border-border dark:bg-card/90">
         <FileSpreadsheet className="size-4" />
         AI CSV Importer
       </div>
 
-      <div className="space-y-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          Turn raw CSV files into a polished import preview.
+      <div className="space-y-4">
+        <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          Preview CSV data before anything is sent anywhere.
         </h1>
-        <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-          Upload a spreadsheet, inspect the structure, and confirm the data before the next integration step.
+        <p className="max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
+          A calm, structured upload experience for reviewing files, checking columns, and preparing your next step with confidence.
         </p>
       </div>
 
@@ -226,10 +214,10 @@ function ProjectInfo() {
               key={feature.title}
               whileHover={{ y: -2, scale: 1.01 }}
               transition={{ duration: 0.2 }}
-              className="rounded-none border-0 bg-transparent p-0 shadow-none"
+              className="rounded-2xl border border-border/80 bg-background/95 p-4 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] dark:border-border/80 dark:bg-card/90"
             >
               <div className="flex items-start gap-3">
-                <div className="rounded-xl border border-border/70 bg-background p-2 text-foreground shadow-sm">
+                <div className="rounded-xl border border-border/80 bg-muted/80 p-2 text-foreground shadow-sm dark:border-border/80 dark:bg-muted/70">
                   <Icon className="size-4" />
                 </div>
                 <div>
@@ -259,14 +247,14 @@ function UploadDropzone({
       <div
         {...getRootProps({ className: 'group' })}
         className={cn(
-          'flex min-h-[320px] flex-col items-center justify-center rounded-[24px] border-2 border-dashed px-6 py-8 text-center transition-all duration-200 sm:min-h-[360px] sm:px-8',
+          'flex min-h-[320px] flex-col items-center justify-center rounded-[28px] border border-border/80 bg-background/95 px-6 py-8 text-center shadow-[0_20px_70px_-30px_rgba(15,23,42,0.4)] transition-all duration-200 sm:min-h-[380px] sm:px-8 dark:border-border dark:bg-card/95',
           isDragActive
-            ? 'border-primary bg-primary/8 shadow-inner'
-            : 'border-border/70 bg-muted/30 hover:border-primary/60 hover:bg-accent/40',
+            ? 'border-primary bg-primary/10 shadow-[0_20px_70px_-28px_rgba(59,130,246,0.45)] dark:border-primary/80 dark:bg-primary/12'
+            : 'hover:border-primary/70 hover:bg-muted/80 dark:hover:bg-muted/40',
         )}
       >
         <input {...getInputProps()} />
-        <div className="rounded-2xl border border-border/70 bg-background p-3 shadow-sm">
+        <div className="rounded-2xl border border-border/80 bg-muted/80 p-3 shadow-sm dark:border-border/80 dark:bg-muted/70">
           <UploadCloud className="size-8 text-foreground" />
         </div>
         <p className="mt-5 text-lg font-semibold text-foreground">
@@ -306,7 +294,7 @@ function UploadDropzone({
   );
 }
 
-function PreviewView({ file, previewData, onReselect, onUploadClick, showToast, toastMessage }) {
+function PreviewView({ file, previewData, onReselect, onUploadClick, toastMessage }) {
   const visibleRows = previewData.rows.slice(0, 50);
   const hasMoreRows = previewData.totalRows > 50;
 
@@ -338,8 +326,8 @@ function PreviewView({ file, previewData, onReselect, onUploadClick, showToast, 
           <FileInfoCard label="Columns" value={previewData.totalColumns.toLocaleString()} />
         </div>
 
-        <div className="overflow-hidden border-t border-border/70 bg-transparent">
-          <div className="flex flex-col gap-2 border-b border-border/70 px-0 py-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="overflow-hidden rounded-[24px] border border-border/80 bg-background/95 shadow-[0_16px_50px_-28px_rgba(15,23,42,0.4)] dark:border-border dark:bg-card/95">
+          <div className="flex flex-col gap-2 border-b border-border/70 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
             <div>
               <p className="text-sm font-semibold text-foreground">CSV Preview</p>
               <p className="text-sm text-muted-foreground">Showing the first 50 rows of your imported file.</p>
@@ -377,13 +365,13 @@ function PreviewView({ file, previewData, onReselect, onUploadClick, showToast, 
           </div>
 
           {hasMoreRows ? (
-            <div className="border-t border-border/70 px-0 py-3 text-sm text-muted-foreground">
+            <div className="border-t border-border/70 px-4 py-3 text-sm text-muted-foreground sm:px-5">
               Only the first 50 rows are shown. Scroll horizontally to inspect the full structure.
             </div>
           ) : null}
         </div>
 
-        <div className="sticky bottom-4 z-20 rounded-none border border-border/70 bg-background/95 p-3 shadow-sm backdrop-blur sm:p-4">
+        <div className="sticky bottom-4 z-20 rounded-[20px] border border-border/80 bg-background/95 p-3 shadow-[0_16px_50px_-24px_rgba(15,23,42,0.4)] backdrop-blur dark:border-border dark:bg-card/95 sm:p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">
               This button is only for the next UI step and will connect to the backend later.
@@ -396,26 +384,7 @@ function PreviewView({ file, previewData, onReselect, onUploadClick, showToast, 
         </div>
       </div>
 
-      <AnimatePresence>
-        {showToast ? (
-          <motion.div
-            initial={{ opacity: 0, y: -12, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.98 }}
-            className="fixed right-4 top-4 z-50 w-[min(92vw,360px)] rounded-2xl border border-border/70 bg-background/95 p-4 shadow-xl backdrop-blur"
-          >
-            <div className="flex items-start gap-3">
-              <div className="rounded-full bg-emerald-500/15 p-2 text-emerald-600">
-                <CheckCircle2 className="size-4" />
-              </div>
-              <div>
-                <p className="font-medium text-foreground">Upload queued</p>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">{toastMessage}</p>
-              </div>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <Toaster />
     </motion.div>
   );
 }
