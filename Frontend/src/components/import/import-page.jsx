@@ -24,6 +24,7 @@ import { parseCsvFile } from '@/lib/csv-parser';
 import { validateCsvFile } from '@/lib/csv-validation';
 import { cn } from '@/lib/utils';
 import { formatFileSize } from '@/utils/format-file-size';
+import api from '@/config/api';
 
 const featurePoints = [
   {
@@ -119,8 +120,18 @@ export default function ImportPage() {
     onDrop: handleDrop,
   });
 
-  const handleUploadClick = () => {
+  const handleUploadClick = async() => {
     const message = 'Backend integration will be implemented in the next step.';
+    const csv = new FormData();
+    csv.append("csv", file)
+    try{
+      const response  = await api.post("/api/csv/upload",csv)
+      console.log("response from backend ", response)
+    }
+    catch(err){
+      console.log("something gone wrong ", err.message)
+    }
+    console.log(file)
     setToastMessage(message);
     toast.success('Upload queued', {
       description: message,
