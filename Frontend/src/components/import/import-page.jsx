@@ -178,25 +178,23 @@ function UploadView({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8"
+      className="w-full min-h-screen px-0 py-0"
     >
-      <div className="rounded-[28px] border border-border/70 bg-background/90 p-4 shadow-[0_18px_70px_-24px_rgba(15,23,42,0.28)] backdrop-blur sm:p-6 lg:p-8">
-        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="order-2 flex flex-col gap-5 lg:order-1">
-            <ProjectInfo />
-          </div>
+      <div className="flex flex-col gap-8 px-4 py-6 sm:px-6 lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:px-8 lg:py-8">
+        <div className="order-2 flex flex-col gap-5 lg:order-1">
+          <ProjectInfo />
+        </div>
 
-          <div className="order-1 lg:order-2">
-            <UploadDropzone
-              error={error}
-              fileName={fileName}
-              getInputProps={getInputProps}
-              getRootProps={getRootProps}
-              isDragActive={isDragActive}
-              isParsing={isParsing}
-              onBrowseClick={onBrowseClick}
-            />
-          </div>
+        <div className="order-1 lg:order-2">
+          <UploadDropzone
+            error={error}
+            fileName={fileName}
+            getInputProps={getInputProps}
+            getRootProps={getRootProps}
+            isDragActive={isDragActive}
+            isParsing={isParsing}
+            onBrowseClick={onBrowseClick}
+          />
         </div>
       </div>
     </motion.div>
@@ -228,7 +226,7 @@ function ProjectInfo() {
               key={feature.title}
               whileHover={{ y: -2, scale: 1.01 }}
               transition={{ duration: 0.2 }}
-              className="rounded-2xl border border-border/60 bg-card/80 p-4 shadow-sm"
+              className="rounded-none border-0 bg-transparent p-0 shadow-none"
             >
               <div className="flex items-start gap-3">
                 <div className="rounded-xl border border-border/70 bg-background p-2 text-foreground shadow-sm">
@@ -317,9 +315,9 @@ function PreviewView({ file, previewData, onReselect, onUploadClick, showToast, 
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8"
+      className="w-full min-h-screen px-0 py-0"
     >
-      <div className="rounded-[28px] border border-border/70 bg-background/90 p-4 shadow-[0_18px_70px_-24px_rgba(15,23,42,0.28)] backdrop-blur sm:p-6 lg:p-8">
+      <div className="flex flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <p className="text-sm font-medium text-muted-foreground">Preview ready</p>
@@ -333,15 +331,15 @@ function PreviewView({ file, previewData, onReselect, onUploadClick, showToast, 
           </Button>
         </div>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <FileInfoCard label="File name" value={file.name} />
           <FileInfoCard label="File size" value={formatFileSize(file.size)} />
           <FileInfoCard label="Rows" value={previewData.totalRows.toLocaleString()} />
           <FileInfoCard label="Columns" value={previewData.totalColumns.toLocaleString()} />
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-[24px] border border-border/70 bg-card/80 shadow-sm">
-          <div className="flex flex-col gap-2 border-b border-border/70 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <div className="overflow-hidden border-t border-border/70 bg-transparent">
+          <div className="flex flex-col gap-2 border-b border-border/70 px-0 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm font-semibold text-foreground">CSV Preview</p>
               <p className="text-sm text-muted-foreground">Showing the first 50 rows of your imported file.</p>
@@ -379,13 +377,13 @@ function PreviewView({ file, previewData, onReselect, onUploadClick, showToast, 
           </div>
 
           {hasMoreRows ? (
-            <div className="border-t border-border/70 px-4 py-3 text-sm text-muted-foreground sm:px-5">
+            <div className="border-t border-border/70 px-0 py-3 text-sm text-muted-foreground">
               Only the first 50 rows are shown. Scroll horizontally to inspect the full structure.
             </div>
           ) : null}
         </div>
 
-        <div className="sticky bottom-4 z-20 mt-8 rounded-[20px] border border-border/70 bg-card/95 p-3 shadow-lg backdrop-blur sm:p-4">
+        <div className="sticky bottom-4 z-20 rounded-none border border-border/70 bg-background/95 p-3 shadow-sm backdrop-blur sm:p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">
               This button is only for the next UI step and will connect to the backend later.
