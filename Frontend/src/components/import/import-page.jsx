@@ -14,6 +14,7 @@ import {
   Workflow,
 } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'sonner';
 
@@ -25,6 +26,7 @@ import { validateCsvFile } from '@/lib/csv-validation';
 import { cn } from '@/lib/utils';
 import { formatFileSize } from '@/utils/format-file-size';
 import api from '@/config/api';
+import useExtractionStore from '@/store/extractionStore';
 
 const featurePoints = [
   {
@@ -50,6 +52,8 @@ const featurePoints = [
 ];
 
 export default function ImportPage() {
+  const router = useRouter();
+  const setExtractionResult = useExtractionStore((state) => state.setExtractionResult);
   const [file, setFile] = useState(null);
   const [previewData, setPreviewData] = useState(null);
   const [error, setError] = useState('');
@@ -120,22 +124,28 @@ export default function ImportPage() {
     onDrop: handleDrop,
   });
 
-  const handleUploadClick = async() => {
-    const message = 'Backend integration will be implemented in the next step.';
+  const handleUploadClick = async () => {
+    if (!file) {
+      toast.error('Please select a CSV file first.');
+      return;
+    }
+
     const csv = new FormData();
-    csv.append("csv", file)
-    try{
-      const response  = await api.post("/api/csv/upload",csv)
-      console.log("response from backend ", response)
+    csv.append('csv', file);
+
+    try {
+      const response = await api.post('/api/csv/upload', csv);
+      const payload = response?.data?.data;
+
+      if (payload) {
+        setExtractionResult(payload);
+        router.push('/results');
+      } else {
+        toast.error('The upload completed but no result data was returned.');
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Upload failed. Please try again.');
     }
-    catch(err){
-      console.log("something gone wrong ", err.message)
-    }
-    console.log(file)
-    setToastMessage(message);
-    toast.success('Upload queued', {
-      description: message,
-    });
   };
 
   if (!isPreviewVisible) {

@@ -1,31 +1,42 @@
 import { ArrowDownToLine, ArrowUpFromLine } from 'lucide-react';
 
-export default function SummaryCards({ extractedCount, skippedCount }) {
+export function SummaryCards({ totalExtracted, totalSkipped }) {
+  const cards = [
+    {
+      label: 'Total Extracted',
+      value: totalExtracted,
+      icon: ArrowUpFromLine,
+      tone: 'text-emerald-600 dark:text-emerald-400',
+      bg: 'bg-emerald-50 dark:bg-emerald-950/40',
+    },
+    {
+      label: 'Total Skipped',
+      value: totalSkipped,
+      icon: ArrowDownToLine,
+      tone: 'text-amber-600 dark:text-amber-400',
+      bg: 'bg-amber-50 dark:bg-amber-950/40',
+    },
+  ];
+
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <div className="rounded-2xl border border-border/70 bg-background/95 p-5 shadow-sm dark:bg-card/90">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Total Extracted</p>
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-foreground">{extractedCount}</p>
+      {cards.map((card) => {
+        const Icon = card.icon;
+        return (
+          <div
+            key={card.label}
+            className="rounded-2xl border border-border/70 bg-background/95 p-5 shadow-sm"
+          >
+            <div className={`inline-flex rounded-xl p-2 ${card.bg}`}>
+              <Icon className={`size-5 ${card.tone}`} />
+            </div>
+            <p className="mt-4 text-sm text-muted-foreground">{card.label}</p>
+            <p className="mt-1 text-3xl font-semibold tracking-tight text-foreground">
+              {card.value}
+            </p>
           </div>
-          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-emerald-600 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400">
-            <ArrowUpFromLine className="size-5" />
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-2xl border border-border/70 bg-background/95 p-5 shadow-sm dark:bg-card/90">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Total Skipped</p>
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-foreground">{skippedCount}</p>
-          </div>
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-amber-600 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-400">
-            <ArrowDownToLine className="size-5" />
-          </div>
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 }
