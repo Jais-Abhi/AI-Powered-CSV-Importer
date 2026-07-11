@@ -10,6 +10,9 @@ const uploadCSV = async (req, res) => {
 
     const records = await parseCSVFile(req.file.buffer);
     const batches = createBatches(records, 50); // Adjust batch size as needed
+
+    const result  = 
+
     return res.status(200).json({
       message: 'CSV parsed successfully',
       data: batches,
