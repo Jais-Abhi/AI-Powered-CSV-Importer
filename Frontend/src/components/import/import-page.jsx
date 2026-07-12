@@ -374,8 +374,8 @@ function PreviewView({ file, previewData, onReselect, onUploadClick, toastMessag
                   {visibleRows.map((row, rowIndex) => (
                     <tr key={`${rowIndex}-${Object.values(row).join('-')}`} className={rowIndex % 2 === 0 ? 'bg-background' : 'bg-muted/40'}>
                       {previewData.headers.map((header) => (
-                        <td key={`${rowIndex}-${header}`} className="max-w-[220px] border-b border-border/60 px-3 py-3 text-foreground">
-                          <div className="truncate">{row[header] ?? ''}</div>
+                        <td key={`${rowIndex}-${header}`} className="max-w-[220px] border-b border-border/60 px-3 py-3 align-top text-foreground">
+                          <div className="whitespace-normal break-words break-all">{row[header] ?? ''}</div>
                         </td>
                       ))}
                     </tr>

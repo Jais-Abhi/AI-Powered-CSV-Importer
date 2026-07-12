@@ -36,19 +36,19 @@ export function DataTable({ rows, showReasonColumn }) {
                     <tr key={`${rowIndex}-${JSON.stringify(row)}`} className={rowIndex % 2 === 0 ? 'bg-background' : 'bg-muted/40'}>
                       {showReasonColumn ? (
                         <>
-                          <td className="max-w-[220px] border-b border-border/60 px-3 py-3 text-foreground">
-                            <div className="truncate">{row.reason || '-'}</div>
+                          <td className="min-w-[200px] max-w-[320px] border-b border-border/60 px-3 py-3 align-top text-foreground">
+                            <div className="whitespace-normal break-words break-all">{row.reason || '-'}</div>
                           </td>
                           {visibleValues.map((value, index) => (
-                            <td key={`${rowIndex}-${baseHeaders.filter((key) => key !== 'reason')[index]}`} className="max-w-[220px] border-b border-border/60 px-3 py-3 text-foreground">
-                              <div className="truncate">{value ?? ''}</div>
+                            <td key={`${rowIndex}-${baseHeaders.filter((key) => key !== 'reason')[index]}`} className="min-w-[200px] max-w-[320px] border-b border-border/60 px-3 py-3 align-top text-foreground">
+                              <div className="whitespace-normal break-words break-all">{value ?? ''}</div>
                             </td>
                           ))}
                         </>
                       ) : (
                         baseHeaders.map((key) => (
-                          <td key={`${rowIndex}-${key}`} className="max-w-[220px] border-b border-border/60 px-3 py-3 text-foreground">
-                            <div className="truncate">{row[key] ?? ''}</div>
+                          <td key={`${rowIndex}-${key}`} className="min-w-[200px] max-w-[320px] border-b border-border/60 px-3 py-3 align-top text-foreground">
+                            <div className="whitespace-normal break-words break-all">{row[key] ?? ''}</div>
                           </td>
                         ))
                       )}
