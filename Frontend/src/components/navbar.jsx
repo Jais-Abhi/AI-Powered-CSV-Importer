@@ -45,14 +45,17 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button
-            variant="ghost"
-            size="icon"
+          <a
+            href="https://github.com/Jais-Abhi/AI-Powered-CSV-Importer"
+            target="_blank"
+            rel="noreferrer"
             className="hidden md:inline-flex"
             aria-label="View GitHub repository"
           >
-            <GitBranch className="size-4" />
-          </Button>
+            <Button variant="ghost" size="icon" type="button">
+              <GitBranch className="size-4" />
+            </Button>
+          </a>
           <Button
             variant="ghost"
             size="icon"
@@ -83,7 +86,7 @@ export function Navbar() {
               </Link>
             ))}
             <a
-              href="https://github.com"
+              href="https://github.com/Jais_Abhi"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

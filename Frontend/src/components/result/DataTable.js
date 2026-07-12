@@ -166,7 +166,7 @@ export function DataTable({ rows, showReasonColumn }) {
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="relative border-b border-border/80 bg-background/95 px-3 py-3 text-left font-semibold text-foreground after:absolute after:top-0 after:right-0 after:h-full after:w-[2px] after:bg-border/90"
+                      className="relative border-b border-border/80 bg-background/95 px-3 py-3 text-left font-semibold text-foreground after:absolute after:top-0 after:right-0 after:h-full after:w-[3px] after:bg-foreground/25 dark:after:bg-foreground/45"
                       style={{ width: header.getSize() }}
                     >
                       <div
